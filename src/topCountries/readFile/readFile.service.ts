@@ -3,11 +3,9 @@ import * as fs from 'fs';
 import { FileData } from '../../interfaces/fileData.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Country } from '../../schemas/country.schema';
-import { Model, isValidObjectId } from 'mongoose';
+import { Model} from 'mongoose';
 import { Population} from '../../schemas/population.schema';
 import { CsvParser } from 'nest-csv-parser'
-import { response } from 'express';
-import {ObjectId} from 'mongodb'
 
 class Entity {
     foo: string
@@ -66,6 +64,7 @@ export class ReadFileService {
   }
 
   public async getPopulation(){
+   
     let res:Population[] = [];
     await this.PopulationModel.find({}).then((response: Population[]) => {
       res = response;

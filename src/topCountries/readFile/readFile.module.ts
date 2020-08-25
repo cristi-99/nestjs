@@ -12,8 +12,7 @@ import { ViewController } from './view.controller';
 @Module({
   imports: [
     CsvModule,
-    MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema }]),
-    MongooseModule.forFeature([{ name: Population.name, schema: PopulationSchema }])
+    MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema },{ name: Population.name, schema: PopulationSchema }]),
   ],
   controllers: [ReadFileController, TopController, ViewController],
   providers: [ReadFileService, TopService],
