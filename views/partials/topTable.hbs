@@ -1,0 +1,47 @@
+<topTable>
+    <body>
+        <table class= "table table-striped">
+            <th>Year</th>
+            <th>Country</th>
+            <th>Population</th>
+                 {{#each top1}}
+        <tr>
+            
+            <td>
+                {{this.year}}
+            </td>
+            <td>
+                {{this.country.[0]}}
+            </td>
+            <td>
+                {{this.population.[0] }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+            </td>
+            <td>
+                {{this.country.[1]}}
+            </td>
+            <td>
+                {{this.population.[1] }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                
+            </td>
+            <td>
+                {{this.country.[2]}}
+            </td>
+            <td>
+                {{this.population.[2] }}
+            </td>
+        </tr>
+        {{/each}}
+        </table>
+       
+</ul>
+    </body>
+</topTable>
