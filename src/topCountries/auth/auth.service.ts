@@ -6,14 +6,15 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { use } from 'passport';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(Users.name) private UsersModel: Model<Users>,
     private jwtService: JwtService,
+    private configService:ConfigService
   ) {}
-
   async validateUser( userData:any) {
     const user = await this.UsersModel.findOne({ username: userData.username });
     

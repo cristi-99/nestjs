@@ -3,6 +3,8 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { AppModule } from './app.module';
 import * as hbs from 'hbs';
 import * as path from 'path'
+import { ConfigService } from '@nestjs/config';
+import { config } from 'process';
 
 declare const module: any;
 
