@@ -1,6 +1,8 @@
 import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
 import { TopService } from './top.service';
-import { JwtAuthGuard } from '../auth/jwt-auth-guard';
+import { JwtAuthGuard } from '../../auth/jwt-auth-guard';
+import { Roles } from 'src/roles/roles.decorator';
+
 
 @Controller('api/top')
 export class TopController {
@@ -8,6 +10,7 @@ export class TopController {
   private readonly logger = new Logger();
   @UseGuards(JwtAuthGuard)
   @Get()
+  @Roles('Employee')
   public async getTop() {
    await this.topService.getTop();
   }

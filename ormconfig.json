@@ -1,0 +1,9 @@
+{
+    "database": "nestjs",
+    "host": "localhost",
+    "username": "admin",
+    "password": "admin",
+    "type": "postgres",
+    "migrations": ["/home/cristi/nestjs/src/migration/1598535373755-Roles.ts"],
+    "migrationsRun": true
+}

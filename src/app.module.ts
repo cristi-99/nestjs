@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import * as Joi from "@hapi/joi"
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ReadFileModule } from './topCountries/readFile/readFile.module';
-import { LocalStrategy } from './topCountries/auth/local.strategy'
+import { LocalStrategy } from './auth/local.strategy'
 import { CsvModule } from 'nest-csv-parser';
-import { AuthService} from './topCountries/auth/auth.service'
-import { Users, UserSchema } from './schemas/userModel';
-import { JwtModule} from '@nestjs/jwt'
-import { authSecret } from './config/auth.config'
-import { JwtAuthGuard } from './topCountries/auth/jwt-auth-guard'
-import { JwtStrategy } from './topCountries/auth/jwt.strategy'
+import { AuthService} from './auth/auth.service'
+import { JwtModule, JwtService} from '@nestjs/jwt'
+import { JwtAuthGuard } from './auth/jwt-auth-guard'
+import { JwtStrategy } from './auth/jwt.strategy'
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { config } from 'process';
+import { UserModule } from './users/user.module'
+import { DatabaseModule } from './database/database.module'
+import { AuthModule } from './auth/auth.module';
+import { RoleModule } from './roles/role.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './roles/roles.guard';
 
 class Service{
   constructor (private configService:ConfigService){}
@@ -23,21 +26,44 @@ class Service{
 
 @Module({
   imports: [
-  
+    RoleModule,
+    UserModule,
+    DatabaseModule,
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
+        POSTGRES_HOST: Joi.string().required(),
+        POSTGRES_PORT: Joi.number().required(),
+        POSTGRES_USER: Joi.string().required(),
+        POSTGRES_PASSWORD: Joi.string().required(),
+        POSTGRES_DB: Joi.string().required(),
+        PORT: Joi.number(),
+      })
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    JwtModule.register({
-      secret: authSecret.secret,
-      signOptions: { expiresIn: '60s' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}s`,
+        },
+      }),
     }),
     CsvModule,
     MongooseModule.forRoot(new Service(new ConfigService).getConst('DATABASE_PATH')),
     ReadFileModule,
-    MongooseModule.forFeature([{ name: Users.name, schema: UserSchema }]),
+    AuthModule
   ],
 
-  controllers: [AppController],
-  providers: [AppService, AuthService, LocalStrategy, JwtAuthGuard, JwtStrategy, ConfigService, Service],
+  controllers: [],
+  providers: [AppService, AuthService, LocalStrategy, JwtAuthGuard, JwtStrategy, ConfigService, Service, {
+    provide: APP_GUARD,
+    useClass: RolesGuard,
+  }],
 })
 export class AppModule {}
