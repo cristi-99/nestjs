@@ -3,20 +3,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../users/user.entity';
 import { Role } from '../roles/role.entity';
-import {Roles1598535373755} from '../migration/1598535373755-Roles'
+import { Roles1598535373755 } from '../migration/1598535373755-Roles';
+import { isString } from 'util';
+import { ConstDto } from 'src/const.dto';
+import { UserService } from 'src/users/user.service';
+import { ConstDtoModule } from 'src/const.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      imports: [ConfigModule,ConstDtoModule],
+      inject: [ConfigService, ConstDto],
+      
+      useFactory: (configService: ConfigService, constDto:ConstDto) => ({
+        
         type: 'postgres',
-        host: configService.get('POSTGRES_HOST'),
-        port: configService.get('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DB'),
+        host: constDto.POSTGRES_HOST,
+        port: constDto.POSTGRES_PORT,
+        username: constDto.POSTGRES_USER,
+        password: constDto.POSTGRES_PASSWORD,
+        database: constDto.POSTGRES_DB,
         synchronize: true,
         migrations: [Roles1598535373755],
         migrationsRun: true,
@@ -24,5 +30,6 @@ import {Roles1598535373755} from '../migration/1598535373755-Roles'
       }),
     }),
   ],
+  providers: [ConstDto]
 })
 export class DatabaseModule {}

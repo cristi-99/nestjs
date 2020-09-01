@@ -7,8 +7,6 @@ import RegisterDto from './dto/register.dto';
 import {TokenPayload} from './tokenPayload.interface'
 import {RoleService} from '../roles/role.service'
 import {Role} from '../roles/role.entity';
-import { CreateRoleDto } from 'src/roles/dto/createRole.dto';
-import { CreateUserDto } from 'src/users/dto/createUser.dto';
 
 @Injectable()
 export class AuthService {

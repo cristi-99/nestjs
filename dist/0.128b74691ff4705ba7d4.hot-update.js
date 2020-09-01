@@ -1,0 +1,137 @@
+exports.id = 0;
+exports.modules = {
+
+/***/ 27:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c, _d, _e, _f, _g, _h;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CountriesController = void 0;
+const common_1 = __webpack_require__(7);
+const countries_service_1 = __webpack_require__(28);
+const readFile_service_1 = __webpack_require__(13);
+const express_1 = __webpack_require__(26);
+const createCountry_dto_1 = __webpack_require__(29);
+const roles_decorator_1 = __webpack_require__(24);
+const jwt_auth_guard_1 = __webpack_require__(22);
+const editCountry_dto_1 = __webpack_require__(62);
+let CountriesController = class CountriesController {
+    constructor(readFileService, countriesService) {
+        this.readFileService = readFileService;
+        this.countriesService = countriesService;
+        this.logger = new common_1.Logger();
+    }
+    createCountry(body, res) {
+        this.countriesService.createCountry(body, res);
+    }
+    updateCountryPopulation(countryToEdit, res) {
+        return this.countriesService.updateCountryPopulation(countryToEdit, res);
+    }
+    deleteCountry(countryToDelete, res) {
+        this.countriesService.deleteCountry(countryToDelete, res);
+    }
+    async getAllCountries(res) {
+        res.send(await this.countriesService.GetAllCountries());
+    }
+};
+__decorate([
+    common_1.Post(),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+    roles_decorator_1.Roles('Administrator'),
+    __param(0, common_1.Body()), __param(1, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_a = typeof createCountry_dto_1.CreateCountryDto !== "undefined" && createCountry_dto_1.CreateCountryDto) === "function" ? _a : Object, typeof (_b = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _b : Object]),
+    __metadata("design:returntype", void 0)
+], CountriesController.prototype, "createCountry", null);
+__decorate([
+    common_1.Put(),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+    roles_decorator_1.Roles('Administrator'),
+    __param(0, common_1.Body()), __param(1, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_c = typeof editCountry_dto_1.EditCountryDto !== "undefined" && editCountry_dto_1.EditCountryDto) === "function" ? _c : Object, typeof (_d = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _d : Object]),
+    __metadata("design:returntype", void 0)
+], CountriesController.prototype, "updateCountryPopulation", null);
+__decorate([
+    common_1.Delete(),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+    roles_decorator_1.Roles('Administrator'),
+    __param(0, common_1.Body()), __param(1, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_e = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _e : Object]),
+    __metadata("design:returntype", void 0)
+], CountriesController.prototype, "deleteCountry", null);
+__decorate([
+    common_1.Get(),
+    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_f = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _f : Object]),
+    __metadata("design:returntype", Promise)
+], CountriesController.prototype, "getAllCountries", null);
+CountriesController = __decorate([
+    common_1.Controller('api/countries'),
+    __metadata("design:paramtypes", [typeof (_g = typeof readFile_service_1.ReadFileService !== "undefined" && readFile_service_1.ReadFileService) === "function" ? _g : Object, typeof (_h = typeof countries_service_1.CountriesService !== "undefined" && countries_service_1.CountriesService) === "function" ? _h : Object])
+], CountriesController);
+exports.CountriesController = CountriesController;
+
+
+/***/ }),
+
+/***/ 62:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EditCountryDto = void 0;
+const class_validator_1 = __webpack_require__(30);
+class EditCountryDto {
+}
+__decorate([
+    class_validator_1.IsString(),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", String)
+], EditCountryDto.prototype, "id", void 0);
+__decorate([
+    class_validator_1.IsArray(),
+    class_validator_1.IsString({ each: true }),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", typeof (_a = typeof Array !== "undefined" && Array) === "function" ? _a : Object)
+], EditCountryDto.prototype, "year", void 0);
+__decorate([
+    class_validator_1.IsArray(),
+    class_validator_1.IsString({ each: true }),
+    class_validator_1.IsNotEmpty(),
+    __metadata("design:type", typeof (_b = typeof Array !== "undefined" && Array) === "function" ? _b : Object)
+], EditCountryDto.prototype, "population", void 0);
+exports.EditCountryDto = EditCountryDto;
+
+
+/***/ })
+
+};

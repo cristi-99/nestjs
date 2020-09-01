@@ -5,6 +5,8 @@ import * as hbs from 'hbs';
 import * as path from 'path'
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { ConstDto } from './const.dto';
+import { ConfigService } from '@nestjs/config';
 
 declare const module: any;
 
@@ -15,7 +17,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser())
-
   await app.listen(3000);
   
   if (module.hot) {
