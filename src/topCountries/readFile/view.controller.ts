@@ -8,9 +8,9 @@ import { Roles } from 'src/roles/roles.decorator';
 @Controller('api/view')
 export class ViewController {
   constructor(private topService: TopService) {}
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get()
-  @Roles('Administrator', 'Guest')
+  
   public async renderView(@Request() req, @Res() res: Response) {
     let top = await this.topService.getTop();
     res.render('main.hbs', {

@@ -8,13 +8,15 @@ import { TopController } from './top.controller';
 import { TopService } from './top.service'
 import { CsvModule } from 'nest-csv-parser';
 import { ViewController } from './view.controller';
+import { CountriesController } from '../countries/countries.controller';
+import { CountriesService } from '../countries/countries.service';
 
 @Module({
   imports: [
     CsvModule,
     MongooseModule.forFeature([{ name: Country.name, schema: CountrySchema },{ name: Population.name, schema: PopulationSchema }]),
   ],
-  controllers: [ReadFileController, TopController, ViewController],
-  providers: [ReadFileService, TopService],
+  controllers: [ReadFileController, TopController, ViewController, CountriesController],
+  providers: [ReadFileService, TopService, CountriesService],
 })
 export class ReadFileModule {}

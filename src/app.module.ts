@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe, Injectable } from '@nestjs/common';
 import * as Joi from "@hapi/joi"
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -16,33 +16,21 @@ import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './roles/role.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './roles/roles.guard';
+//import { ConstDto } from './const.dto';
 
-class Service{
-  constructor (private configService:ConfigService){}
-  getConst(name){
-    return this.configService.get(name)
-  }
-}
+import { ConstDto } from './const.dto';
+
+
 
 @Module({
   imports: [
+    
     RoleModule,
     UserModule,
     DatabaseModule,
     ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRATION_TIME: Joi.string().required(),
-        POSTGRES_HOST: Joi.string().required(),
-        POSTGRES_PORT: Joi.number().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
-        PORT: Joi.number(),
-      })
-    }),
-    ConfigModule.forRoot({
       isGlobal: true,
+      
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -55,13 +43,13 @@ class Service{
       }),
     }),
     CsvModule,
-    MongooseModule.forRoot(new Service(new ConfigService).getConst('DATABASE_PATH')),
+    MongooseModule.forRoot(new ConfigService().get('DATABASE_PATH')),
     ReadFileModule,
     AuthModule
   ],
 
   controllers: [],
-  providers: [AppService, AuthService, LocalStrategy, JwtAuthGuard, JwtStrategy, ConfigService, Service, {
+  providers: [AppService, AuthService, LocalStrategy, JwtAuthGuard, JwtStrategy, ConfigService, {
     provide: APP_GUARD,
     useClass: RolesGuard,
   }],

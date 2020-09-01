@@ -1,6 +1,5 @@
 import { IsEmail, IsString, IsNotEmpty, MinLength } from 'class-validator';
-import {CreateRoleDto} from '../../roles/dto/createRole.dto'
-import { Role } from 'src/roles/role.entity';
+
 
 export class RegisterDto {
   @IsEmail()

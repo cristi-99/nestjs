@@ -10,7 +10,7 @@ export class TopController {
   private readonly logger = new Logger();
   @UseGuards(JwtAuthGuard)
   @Get()
-  @Roles('Employee')
+  @Roles('Administrator')
   public async getTop() {
    await this.topService.getTop();
   }
